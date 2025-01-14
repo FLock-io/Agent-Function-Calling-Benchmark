@@ -19,6 +19,6 @@ def run_evaluation(data_path):
     return exact_acc, call_by_call_acc
 
 if __name__ == "__main__":
-    exact_acc, call_by_call_acc = run_evaluation("results.jsonl")
+    exact_acc, call_by_call_acc = run_evaluation("./data/baseline_gpt-4o-mini_results.jsonl")
     print(f"Exact sequence match accuracy: {exact_acc}")
     print(f"Call by call accuracy: {call_by_call_acc}")
