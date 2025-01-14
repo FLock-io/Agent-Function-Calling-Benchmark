@@ -38,6 +38,7 @@ def strict_ordered_eval(expected_tool, actual_tool):
     """
     
     exact_sequence_match = 0
+    call_by_call_match = 0
     correct_calls = 0
 
     # check if sequences are the same length
@@ -67,11 +68,10 @@ def strict_ordered_eval(expected_tool, actual_tool):
         min_length = min(len(expected_tool), len(actual_tool))
         for i in range(min_length):
             total_calls += 1
-            if (gold_call[i]["name"] == pred_call[i]["name"]) and (gold_call[i]["arguments"] == pred_call[i]["arguments"]):
+            if (expected_tool[i]["name"] == actual_tool[i]["name"]) and (expected_tool[i]["arguments"] == actual_tool[i]["arguments"]):
                 correct_calls += 1
         call_by_call_match = correct_calls / total_calls
     
-
     return exact_sequence_match, call_by_call_match
 
 
