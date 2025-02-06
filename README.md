@@ -99,14 +99,12 @@ To further validate our model's robustness, we evaluated it on **the Berkeley Fu
 ### 5.1 Key Takeaways
 - **Fine-tuning significantly improves performance**: Our **fine-tuned Qwen2.5-7B** model consistently outperforms other models across datasets.
 - **Strong generalization ability**: Unlike other models that perform well on specific benchmarks, our fine-tuned model **excels on both Block and Web3 and general function-calling tasks**.
-- **Higher function call accuracy**: Function-call-based inference achieves **higher call-by-call accuracy** (e.g., GPT-4o function call at **0.5374** vs. GPT-4o chat at **0.3315**).
-- **Fine-tuned Qwen2.5-7B dominates across benchmarks**, securing top positions in both domain-specific and general function-calling tasks.
 
 ### 5.2 Model Performance Breakdown
-- **GPT-4o models** perform well in chat mode but drop significantly in exact match accuracy in function-call mode.
+- **GPT-4o models** perform well in the general BFCL dataset but drop significantly in our block and web3 dataset.
 - **Qwen2.5-7B base model performs decently**, but fine-tuning significantly boosts accuracy.
-- **Fine-tuned Qwen2.5-7B (lr=1e-4) is the best-performing model overall**, excelling in both **domain-specific and general tasks**.
-- **DeepSeek-R1-7B fine-tuned performs well, but not as strong as Qwen2.5-7B fine-tuned models.**
+- **Fine-tuned Qwen2.5-7B is the best-performing model overall**, excelling in both **domain-specific and general tasks**.
+- **DeepSeek-v3 performs adequately but falls short of the fine-tuned Qwen2.5-7B model.**
 
 Our **fine-tuned Qwen2.5-7B model stands out as a robust solution** for function-calling tasks, proving its effectiveness in both **specialized domains** and **general-purpose applications**.
 
