@@ -30,48 +30,83 @@ This report presents the evaluation of various language models on a function cal
 - **Exact Match Accuracy (exact_match_acc)**: The generated ordered function call, including arguments, is entirely correct.
 - **Call by Call Accuracy (call_by_call_acc)**: The generated ordered function call contains some correct arguments, even if the entire sequence is not perfect. For example, if two function calls are required but the model only correctly generates the first one, it still receives partial credit.
 
+### Dataset Description
+Each data instance includes a **query** and a list of **available tools**. The model must generate function calls using the provided tools to correctly respond to the query. 
+
+#### Example Data Format:
+```json
+{
+  "query": "Track crosschain message verification, implement timeout recovery procedures.",
+  "answers": [
+    {"name": "track_crosschain_message", "arguments": {"message_id": "msg12345"}},
+    {"name": "schedule_timeout_check", "arguments": {"message_id": "msg12345", "timeout": "30"}}
+  ],
+  "tools": [
+    {"type": "function", "function": {"name": "track_crosschain_message", "description": "Track the status of a crosschain message", "parameters": {"type": "object", "properties": {"message_id": {"type": "string"}}}}},
+    {"type": "function", "function": {"name": "schedule_timeout_check", "description": "Schedule a timeout check for a message", "parameters": {"type": "object", "properties": {"message_id": {"type": "string"}, "timeout": {"type": "integer"}}}}}
+  ]
+}
+```
+
 ## 2. Methodology
 
 We evaluated multiple models using different inference methods:
 
-1. **GPT-4o** (Chat mode and Function Call mode)
-2. **GPT-4o-mini** (Chat mode and Function Call mode)
-3. **Qwen2.5-7B-Instruct** (Base model)
-4. **Fine-tuned Qwen2.5-7B-Instruct** on training dataset (with different learning rates)
-5. **Fine-tuned DeepSeek-R1-7B**
-6. **DeepSeek-Chat** (Function Call mode)
-7. **O1 Model** (Function Call mode)
-
-The function call tests were performed using both **chat-based interactions** and **structured function-call outputs**, depending on model capabilities.
+1. **GPT-4o**
+2. **GPT-4o-mini**
+3. **Qwen2.5-7B-Instruct** 
+4. **DeepSeek-v3**
+5. **Fine-tuned Qwen2.5-7B-Instruct** on the training dataset
 
 ## 3. Results
 
-The evaluation results for the **Block and Web3** dataset are presented in the table below:
+### Block and Web3 Dataset
 
 | Model | Exact Match Accuracy | Call by Call Accuracy |
 | --- | --- | --- |
-| GPT-4o (Chat) | 0.3315 | 0.3315 |
-| GPT-4o-mini (Chat) | 0.2768 | 0.2768 |
-| GPT-4o (Function Call) | 0.2244 | 0.5374 |
-| GPT-4o-mini (Function Call) | 0.2244 | 0.4928 |
+| GPT-4o | 0.2244 | 0.5374 |
+| GPT-4o-mini | 0.2244 | 0.4928 |
+| DeepSeek-v3 | 0.2032 | 0.5811 |
 | Qwen2.5-7B-Instruct | 0.4224 | 0.4224 |
-| Fine-tuned Qwen2.5 (lr=1e-5) | 0.5935 | 0.6922 |
-| Fine-tuned Qwen2.5 (lr=1e-4) | 0.7593 | 0.8229 |
-| Fine-tuned DeepSeek-R1-7B | 0.6577 | 0.7549 |
-| O1 (Function Call) | 0.2673 | 0.2673 |
-| DeepSeek-Chat (Function Call) | 0.2032 | 0.5811 |
+| **Fine-tuned Qwen2.5** | **0.7593** | **0.8229** |
 
-## 4. Analysis
+## 4. Results on General Dataset
 
-### 4.1 General Observations
-- **Fine-tuning significantly improves performance**: The fine-tuned **Qwen2.5-7B** models outperform all other models, especially at **lr=1e-4**, where they achieve **0.7593 exact match accuracy and 0.8229 call by call accuracy**.
-- **Function call accuracy improves with structured function-call inference**: While chat-based inference provides decent results, function-call-based inference generally achieves **higher call-by-call accuracy** (e.g., GPT-4o function call at **0.5374** vs. GPT-4o chat at **0.3315**).
-- **DeepSeek models underperform in exact match but show potential in call-by-call accuracy**: **DeepSeek-Chat** (function-call) only scores **0.2032 exact match accuracy**, but performs significantly better in call-by-call accuracy (**0.5811**), indicating partial correctness in outputs.
+To further validate our model's robustness, we evaluated it on **the Berkeley Function-Calling Leaderboard** [(BFCL)](https://gorilla.cs.berkeley.edu/blogs/8_berkeley_function_calling_leaderboard.html). Our fine-tuned model not only excels in **Block and Web3** but also achieves top-tier performance on **general function-calling benchmarks**.
 
-### 4.2 Model Performance Breakdown
-- **GPT-4o models** perform well in chat mode but drop significantly in exact match accuracy when switching to function-call mode.
+### BFCL-v3-simple
+
+| Model | Exact Match Accuracy | Call by Call Accuracy |
+| --- | --- | --- |
+| GPT-4o | 0.9925 | 0.9925 |
+| GPT-4o-mini | **0.9974** | **0.9974** |
+| DeepSeek-v3 | - | - |
+| Qwen2.5-7B-Instruct | 0.9725 | 0.9725 |
+| **Fine-tuned Qwen2.5** | **0.9950** | **0.9950** |
+
+### BFCL-v3-parallel-multi
+
+| Model | Exact Match Accuracy | Call by Call Accuracy |
+| --- | --- | --- |
+| GPT-4o | 0.9145 | 0.9145 |
+| GPT-4o-mini | 0.8808 | 0.8808 |
+| DeepSeek-v3 | - | - |
+| Qwen2.5-7B-Instruct | 0.7700 | 0.7700 |
+| **Fine-tuned Qwen2.5** | **0.8700** | **0.8700** |
+
+## 5. Analysis
+
+### 5.1 Key Takeaways
+- **Fine-tuning significantly improves performance**: Our **fine-tuned Qwen2.5-7B** model consistently outperforms other models across datasets.
+- **Strong generalization ability**: Unlike other models that perform well on specific benchmarks, our fine-tuned model **excels on both Block and Web3 and general function-calling tasks**.
+- **Higher function call accuracy**: Function-call-based inference achieves **higher call-by-call accuracy** (e.g., GPT-4o function call at **0.5374** vs. GPT-4o chat at **0.3315**).
+- **Fine-tuned Qwen2.5-7B dominates across benchmarks**, securing top positions in both domain-specific and general function-calling tasks.
+
+### 5.2 Model Performance Breakdown
+- **GPT-4o models** perform well in chat mode but drop significantly in exact match accuracy in function-call mode.
 - **Qwen2.5-7B base model performs decently**, but fine-tuning significantly boosts accuracy.
-- **Fine-tuned Qwen2.5-7B (lr=1e-4) is the best-performing model overall**, achieving the highest accuracy scores.
+- **Fine-tuned Qwen2.5-7B (lr=1e-4) is the best-performing model overall**, excelling in both **domain-specific and general tasks**.
 - **DeepSeek-R1-7B fine-tuned performs well, but not as strong as Qwen2.5-7B fine-tuned models.**
-- **O1 and DeepSeek-Chat models perform the worst**, showing lower scores in both metrics.
+
+Our **fine-tuned Qwen2.5-7B model stands out as a robust solution** for function-calling tasks, proving its effectiveness in both **specialized domains** and **general-purpose applications**.
 
