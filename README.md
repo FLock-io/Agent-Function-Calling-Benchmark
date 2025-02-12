@@ -31,7 +31,7 @@ This report presents the evaluation of various language models on a function cal
 - **Call by Call Accuracy (call_by_call_acc)**: The generated ordered function call contains some correct arguments, even if the entire sequence is not perfect. For example, if two function calls are required but the model only correctly generates the first one, it still receives partial credit.
 
 ### Dataset Description
-Each data instance includes a **query** and a list of **available tools**. The model must generate function calls using the provided tools to correctly respond to the query. 
+Each data instance includes a **query** and a list of **available tools**. The model must generate function calls using the provided tools to correctly respond to the query.
 
 #### Example Data Format:
 ```json
@@ -54,10 +54,11 @@ We evaluated multiple models using different inference methods:
 
 1. **GPT-4o**
 2. **GPT-4o-mini**
-3. **Qwen2.5-7B-Instruct** 
+3. **Qwen2.5-7B-Instruct**
 4. **DeepSeek-v3**
 5. **Gemini-1.5-flash**
-6. **Fine-tuned Qwen2.5-7B-Instruct** on the training dataset
+6. **Gemini-2.9-flash**
+7. **Fine-tuned Qwen2.5-7B-Instruct** on the training dataset
 
 ## 3. Results
 
@@ -65,11 +66,14 @@ We evaluated multiple models using different inference methods:
 
 | Model | Exact Match Accuracy | Call by Call Accuracy |
 | --- | --- | --- |
-| GPT-4o | 0.2244 | 0.5374 |
-| GPT-4o-mini | 0.2244 | 0.4928 |
-| DeepSeek-v3 | 0.2032 | 0.5811 |
-| Qwen2.5-7B-Instruct | 0.4224 | 0.4224 |
-| Gemini-1.5-flash | 0.4598 | 0.4598 |
+| **Proprietary Models**
+| GPT-4o | 0.4598 | 0.6624 |
+| GPT-4o-mini | 0.3529 | 0.5179 |
+| Gemini-1.5-flash | 0.4438 | 0.5351 |
+| Gemini-2.0-flash | 0.3957 | 0.4924 |
+| **Open-Sourced Models** 
+| DeepSeek-v3 | 0.2887 | 0.6229 |
+| Qwen2.5-7B-Instruct | 0.5250 | 0.5790 |
 | **Fine-tuned Qwen2.5** | **0.7593** | **0.8229** |
 
 ## 4. Results on General Dataset
@@ -80,36 +84,44 @@ To further validate our model's robustness, we evaluated it on **the Berkeley Fu
 
 | Model | Exact Match Accuracy | Call by Call Accuracy |
 | --- | --- | --- |
+| **Proprietary Models**
 | GPT-4o | 0.9925 | 0.9925 |
 | GPT-4o-mini | **0.9974** | **0.9974** |
+| Gemini-1.5-flash | **0.9975** | **0.9975** |
+| Gemini-2.0-flash | 0.9938 | 0.9938 |
+| **Open-Sourced Models** 
 | DeepSeek-v3 | 0.9450 | 0.9450 |
 | Qwen2.5-7B-Instruct | 0.9725 | 0.9725 |
-| Gemini-1.5-flash | **0.9975** | **0.9975** |
 | **Fine-tuned Qwen2.5** | **0.9950** | **0.9950** |
 
 ### BFCL-v3-parallel-multi
 
 | Model | Exact Match Accuracy | Call by Call Accuracy |
 | --- | --- | --- |
-| **GPT-4o** | **0.9145** | **0.9145** |
-| GPT-4o-mini | 0.8808 | 0.8808 |
-| DeepSeek-v3 | 0.8850 | 0.8850 |
+| **Proprietary Models**
+| **GPT-4o** | **0.9393** | **0.9444** |
+| GPT-4o-mini | 0.9343 | 0.9343 |
+| Gemini-1.5-flash | 0.9251 | 0.9358 |
+| Gemini-2.0-flash | wait | wait |
+| **Open-Sourced Models** 
+| DeepSeek-v3 | wait | wait |
 | Qwen2.5-7B-Instruct | 0.7700 | 0.7700 |
-| Gemini-1.5-flash | 0.8900 | 0.8900 |
-| Fine-tuned Qwen2.5 | 0.8700 | 0.8700 |
+| Fine-tuned Qwen2.5 | 0.8900 | 0.8925 |
 
-## 5. Analysis
+## 5. Analysis and Discussion
 
-### 5.1 Key Takeaways
-- **Fine-tuning significantly improves performance**: Our **fine-tuned Qwen2.5-7B** model consistently outperforms other models across datasets.
-- **Strong generalization ability**: Unlike other models that perform well on specific benchmarks, our fine-tuned model **excels on both Block and Web3 and general function-calling tasks**.
+### Performance Trends
+- Proprietary models such as **GPT-4o** and **Gemini-1.5-flash** demonstrate strong generalization across datasets, achieving high accuracy on both Block/Web3 tasks and BFCL benchmarks.
+- **Fine-tuned Qwen2.5** outperforms all other open-source models, especially in the Block/Web3 domain, suggesting that domain-specific tuning significantly enhances function-calling capabilities.
 
-### 5.2 Model Performance Breakdown
-- **GPT-4o models** perform well in the general BFCL dataset but drop significantly in our block and web3 dataset.
-- **Gemini-1.5-flash** is the best-performing proprietary model in the block and web3 dataset.
-- **Qwen2.5-7B base model performs decently**, but fine-tuning significantly boosts accuracy.
-- **Fine-tuned Qwen2.5-7B is the best-performing model overall**, excelling in both **domain-specific and general tasks**.
-- **DeepSeek-v3 performs adequately but falls short of the fine-tuned Qwen2.5-7B model.**
+### Strengths of Fine-tuned Models
+- Fine-tuning Qwen2.5 on a domain-specific dataset resulted in a **45% improvement in exact match accuracy** compared to its pre-trained version.
+- The improvement in **call-by-call accuracy** suggests that fine-tuning helps the model understand structured outputs more precisely, even when full correctness is not achieved.
 
-Our **fine-tuned Qwen2.5-7B model stands out as a robust solution** for function-calling tasks, proving its effectiveness in both **specialized domains** and **general-purpose applications**.
+### Limitations and Challenges
+- Open-source models like **DeepSeek-v3** struggle with **exact function sequence generation**, indicating a need for better structured data training.
+- Proprietary models still outperform fine-tuned open-source models on **general function-calling tasks**, suggesting that larger-scale pretraining and reinforcement tuning contribute significantly to performance.
+
+## 6. Conclusion
+This benchmark highlights the effectiveness of fine-tuning in improving function-calling accuracy for **Block and Web3** tasks. While proprietary models retain an edge in generalization, domain-specific fine-tuning presents a viable pathway for enhancing open-source models' capabilities.
 
