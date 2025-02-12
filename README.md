@@ -57,7 +57,7 @@ We evaluated multiple models using different inference methods:
 3. **Qwen2.5-7B-Instruct**
 4. **DeepSeek-v3**
 5. **Gemini-1.5-flash**
-6. **Gemini-2.9-flash**
+6. **Gemini-2.0-flash**
 7. **Fine-tuned Qwen2.5-7B-Instruct** on the training dataset
 
 ## 3. Results
