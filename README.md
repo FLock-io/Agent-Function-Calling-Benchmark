@@ -94,6 +94,8 @@ To further validate our model's robustness, we evaluated it on **the Berkeley Fu
 | Qwen2.5-7B-Instruct | 0.9725 | 0.9725 |
 | **Fine-tuned Qwen2.5** | **0.9950** | **0.9950** |
 
+**Noted** that the BFCL-v3-simple dataset includes queries that require one-step function calling so the Exact Match Accuracy and Cally by Call Accuracy are the same.
+
 ### BFCL-v3-parallel-multi
 
 | Model | Exact Match Accuracy | Call by Call Accuracy |
