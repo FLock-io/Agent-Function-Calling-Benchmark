@@ -105,7 +105,7 @@ To validate model robustness, we evaluated it on **the Berkeley Function-Calling
 | GPT-4o                  | **0.9393**           |
 | GPT-4o-mini             | 0.9343               |
 | Gemini-1.5-flash        | 0.9251               |
-| Gemini-2.0-flash        | TBD                  |
+| Gemini-2.0-flash        | 0.9161                  |
 | **Open-Sourced Models** |                      |
 | DeepSeek-v3             | TBD                  |
 | Qwen2.5-7B-Instruct     | 0.7700               |
