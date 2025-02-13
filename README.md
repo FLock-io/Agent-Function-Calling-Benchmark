@@ -119,15 +119,10 @@ To validate model robustness, we evaluated it on **the Berkeley Function-Calling
 - Our model maintains high performance in general function-calling tasks, achieving **0.9950** on the **BFCL-v3-simple** benchmark and **0.8900** on **BFCL-v3-parallel-multi**, making it a competitive alternative to proprietary models.
 - Proprietary models (**GPT-4o, Gemini-1.5-flash**) continue to dominate general benchmarks, but our fine-tuned model closes the gap while excelling in domain-specific tasks.
 
-### Strengths of Fine-tuned Models
+### Strengths of Our fine-tuned Models
 
 - Fine-tuning Qwen2.5 on a domain-specific dataset led to a **145% improvement** in exact match accuracy in the **Block/Web3** domain.
 - The model sustains high accuracy in general function-calling tasks, making it both **versatile and specialized**.
-
-### Limitations and Challenges
-
-- Open-source models like **DeepSeek-v3** struggle with **exact function sequence generation**, highlighting the need for better structured data training.
-- Proprietary models still lead in **general function-calling tasks**, suggesting that large-scale pretraining and reinforcement tuning play a crucial role.
 
 ## 6. Conclusion
 
