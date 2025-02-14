@@ -77,7 +77,7 @@ We evaluated multiple models using different inference methods:
 | **Open-Sourced Models** |                      |
 | DeepSeek-v3             | 0.2887               |
 | Qwen2.5-7B-Instruct     | 0.3100               |
-| \*\*Ours\*\*            | **0.7593**           |
+| **Ours**            | **0.7593**           |
 
 ## 4. Results on General Dataset
 
@@ -95,7 +95,7 @@ To validate model robustness, we evaluated it on **the Berkeley Function-Calling
 | **Open-Sourced Models** |                      |
 | DeepSeek-v3             | 0.9450               |
 | Qwen2.5-7B-Instruct     | 0.9725               |
-| Ours                    | **0.9950**           |
+| **Ours**                    | **0.9950**           |
 
 ### BFCL-v3-parallel-multi
 
@@ -109,7 +109,7 @@ To validate model robustness, we evaluated it on **the Berkeley Function-Calling
 | **Open-Sourced Models** |                      |
 | DeepSeek-v3             | 0.9300               |
 | Qwen2.5-7B-Instruct     | 0.7700               |
-| Ours                    | 0.8900               |
+| **Ours**                    | 0.8900               |
 
 ## 5. Analysis and Discussion
 
