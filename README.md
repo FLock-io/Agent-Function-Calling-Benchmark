@@ -107,7 +107,7 @@ To validate model robustness, we evaluated it on **the Berkeley Function-Calling
 | Gemini-1.5-flash        | 0.9251               |
 | Gemini-2.0-flash        | 0.9161                  |
 | **Open-Sourced Models** |                      |
-| DeepSeek-v3             | TBD                  |
+| DeepSeek-v3             | 0.9300               |
 | Qwen2.5-7B-Instruct     | 0.7700               |
 | Ours                    | 0.8900               |
 
