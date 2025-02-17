@@ -89,7 +89,7 @@ def strict_ordered_eval(expected_tool, actual_tool):
         for i in range(min_length):
             total_calls += 1
             if (expected_tool[i]["name"] == actual_tool[i]["name"]) and (
-                expected_tool[i]["arguments"] == actual_tool[i]["arguments"]
+                json.dumps(expected_tool[i]["arguments"], ensure_ascii=False) == json.dumps(actual_tool[i]["arguments"], ensure_ascii=False)
             ):
                 correct_calls += 1
 
